@@ -109,7 +109,20 @@ jobs:
       run: |
         sudo apt-get install ${APT_PACKAGES}
         source /opt/intel/oneapi/setvars.sh --force
+        ifx_path=$(find /opt/intel/oneapi/compiler -name ifx -perm -111 -print | sort -V | tail -n 1)
+        test -x "$ifx_path"
+        icx_path="$(dirname "$ifx_path")/icx"
+        if ! test -x "$icx_path"; then
+          icx_path=$(find /opt/intel/oneapi/compiler -name icx -perm -111 -print | sort -V | tail -n 1)
+        fi
+        test -x "$icx_path"
+        export FC="$ifx_path"
+        export CC="$icx_path"
+        echo "Using Intel Fortran compiler: $FC"
+        echo "Using Intel C compiler: $CC"
         printenv >> "$GITHUB_ENV"
+        echo "$(dirname "$ifx_path")" >> "$GITHUB_PATH"
+        echo "$(dirname "$icx_path")" >> "$GITHUB_PATH"
 
     - name: Configure meson build
       run: >-
