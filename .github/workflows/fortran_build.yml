@@ -111,11 +111,16 @@ jobs:
         source /opt/intel/oneapi/setvars.sh --force
         ifx_path=$(find /opt/intel/oneapi/compiler -name ifx -perm -111 -print | sort -V | tail -n 1)
         test -x "$ifx_path"
+        ifx_root=$(cd "$(dirname "$ifx_path")/.." && pwd)
+        ifx_lib="$ifx_root/lib"
+        test -d "$ifx_lib"
         icx_path="$(dirname "$ifx_path")/icx"
         if ! test -x "$icx_path"; then
           icx_path=$(find /opt/intel/oneapi/compiler -name icx -perm -111 -print | sort -V | tail -n 1)
         fi
         test -x "$icx_path"
+        export LIBRARY_PATH="$ifx_lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+        export LD_LIBRARY_PATH="$ifx_lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
         export FC="$ifx_path"
         export CC="$icx_path"
         echo "Using Intel Fortran compiler: $FC"
