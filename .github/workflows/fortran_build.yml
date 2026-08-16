@@ -78,10 +78,10 @@ jobs:
       FC: ${{ matrix.fc }}
       CC: ${{ matrix.cc }}
       APT_PACKAGES: >-
-        intel-oneapi-compiler-fortran
-        intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
-        intel-oneapi-mkl
-        intel-oneapi-mkl-devel
+        intel-oneapi-compiler-fortran-2026.1
+        intel-oneapi-compiler-dpcpp-cpp-2026.1
+        intel-oneapi-mkl-2026.1
+        intel-oneapi-mkl-devel-2026.1
         asciidoctor
 
     steps:
