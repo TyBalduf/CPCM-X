@@ -131,7 +131,7 @@ jobs:
         --prefix=/ --libdir=lib
         -Dfortran_link_args="-static-intel"
         -Ddefault_library=static
-        -Dlapack=mkl
+        -Dlapack=mkl-rt
 
     - name: Build project
       run: ninja -C ${{ env.BUILD_DIR }}
