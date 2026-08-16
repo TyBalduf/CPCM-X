@@ -124,11 +124,12 @@ jobs:
         echo "$(dirname "$ifx_path")" >> "$GITHUB_PATH"
         echo "$(dirname "$icx_path")" >> "$GITHUB_PATH"
 
+    # Keep the project static, while letting ifx select its Intel runtime archives.
     - name: Configure meson build
       run: >-
         meson setup ${{ env.BUILD_DIR }}
         --prefix=/ --libdir=lib
-        -Dfortran_link_args="-lifcoremt -static"
+        -Dfortran_link_args="-static-intel"
         -Ddefault_library=static
         -Dlapack=mkl
 
