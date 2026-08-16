@@ -125,13 +125,14 @@ jobs:
         echo "$(dirname "$icx_path")" >> "$GITHUB_PATH"
 
     # Keep project libraries static while using shared Intel compiler runtimes.
-    # libirc supplies the allocatable-descriptor runtime used by json-fortran;
-    # keep it from being discarded before Meson adds dependency archives.
+    # libirc supplies the allocatable-descriptor runtime used by json-fortran.
+    # Keep --no-as-needed active through ifx's automatically added runtimes:
+    # libifcoremt has transitive dependencies in libimf.
     - name: Configure meson build
       run: >-
         meson setup ${{ env.BUILD_DIR }}
         --prefix=/ --libdir=lib
-        -Dfortran_link_args="-shared-intel -Wl,-Bdynamic -Wl,--no-as-needed -lirc -Wl,--as-needed"
+        -Dfortran_link_args="-shared-intel -Wl,-Bdynamic -Wl,--no-as-needed -lirc"
         -Ddefault_library=static
         -Dlapack=mkl-rt
 
